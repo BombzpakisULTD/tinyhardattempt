@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 set -e
 BUILD_DIR="build"
-BUILD_BIN="tinyraycaster"
-
+BUILD_BIN="tavern&tavern"
 # Take care of dependencies
 if [ "$(uname)" == "Darwin" ]; then
   if brew help >/dev/null && ! brew list sdl2 >/dev/null 2>&1 ; then

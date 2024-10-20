@@ -7,7 +7,7 @@
 #include "SDL.h"
 
 #include "utils.h"
-#include "tinyraycaster.h"
+#include "main.h"
 
 int main() {
     if (SDL_Init(SDL_INIT_VIDEO)) {

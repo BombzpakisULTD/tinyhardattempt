@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cassert>
-#include <SDL2/SDL.h>
+#include "SDL.h"
 
 #include "utils.h"
 #include "textures.h"

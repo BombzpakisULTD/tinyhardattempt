@@ -4,7 +4,7 @@
 #include <chrono>
 #include <thread>
 #include <cmath>
-#include <SDL2/SDL.h>
+#include "SDL.h"
 
 #include "utils.h"
 #include "main.h"

@@ -19,6 +19,7 @@ int main() {
     GameState gs{ Map(),                                // game map
                   {3.456, 2.345, 1.523, M_PI/3., 0, 0}, // player
                   { {8, 13, 2, 0},               // monstru vietos x,y,koks, vertical
+                    {8, 14, 1, 0},
                   },
                   Texture("../walltext.bmp", SDL_PIXELFORMAT_ABGR8888),  // textures for the walls
                   Texture("../monsters.bmp", SDL_PIXELFORMAT_ABGR8888)}; // textures for the monsters

@@ -7,7 +7,7 @@
 #include "SDL.h"
 
 #include "utils.h"
-#include "main.h"
+#include "tinyraycaster.h"
 
 int main() {
     if (SDL_Init(SDL_INIT_VIDEO)) {
@@ -105,3 +105,4 @@ int main() {
 
     return 0;
 }
+

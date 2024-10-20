@@ -98,27 +98,6 @@ void render(FrameBuffer &fb, const GameState &gs) {
         } // ray marching loop
     } // field of view ray sweeping
 
-    //sky and ground
-    for (int y = 0; y < ekranoaukstis; y++) {
-        float dy = y - (ekranoaukstis / 2.0);
-        if (dy == 0) continue;
-        float angle = degToRad(ra);
-        float factor = PROJEKCIJA * teksturosdydis / dy;
-        float tx = px / 2 + cos(angle) * factor;
-        float ty = py / 2 - sin(angle) * factor;
-
-        for (int tipas = 0; tipas < 2; tipas++) { // 0 - ground, 1 - skybox
-            const Texture &tex = (tipas == 0) ? tex_ground : tex_skybox;
-            int mp = tex[((int)(ty) & 31) * teksturosdydis + ((int)(tx) & 31)];
-            float spalva = tex[((int)(ty) & 31) * teksturosdydis + ((int)(tx) & 31) + mp] * (tipas == 0 ? 0.7 : 0.9);
-            glColor3f(spalva / (tipas == 0 ? 1.5 : 2.0), spalva / (tipas == 0 ? 1.5 : 1.2), spalva);
-            glPointSize(8);
-            glBegin(GL_POINTS);
-            glVertex2i(r * 8 + 530, tipas == 0 ? y : ekranoaukstis - y);
-            glEnd();
-        }
-    }
-
     draw_map(fb, sprites, tex_walls, map, cell_w, cell_h);
 
     for (size_t i=0; i<sprites.size(); i++) { // draw the sprites

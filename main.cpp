@@ -17,31 +17,6 @@ int wall_x_texcoord(const float hitx, const float hity, const Texture &tex_walls
     assert(tex>=0 && tex<(int)tex_walls.size);
     return tex;
 }
-// Ekrano dydžio konstantos, tekstūros dydis ir projekcija
-const int ekranoaukstis = 320;
-const float PROJEKCIJA = 158.0;
-const int teksturosdydis = 32;
-const int zemelapiodydis = 16;
-const Texture &tex_skybox = gs.tex_skybox; // Assuming you have a skybox texture
-
-
-for (int y = linijosPradzia + linijosAukstis; y < ekranoaukstis; y++) {
-    float dy = y - (ekranoaukstis / 2.0);
-    if (dy == 0) continue; // Avoid division by zero
-    float laipsniai = degToRad(ra), Kampas = cos(degToRad(FixAng(pa - ra)));
-    float tx = px / 2 + cos(laipsniai) * PROJEKCIJA * teksturosdydis / dy / Kampas;
-    float ty = py / 2 - sin(laipsniai) * PROJEKCIJA * teksturosdydis / dy / Kampas;
-
-    for (int tipas = 0; tipas < 2; tipas++) {  // 0 - ground, 1 - skybox
-        int mp = (tipas == 0 ? grindys : lubos)[(int)(ty / teksturosdydis) * zemelapiodydis + (int)(tx / teksturosdydis)] * teksturosdydis * teksturosdydis;
-        float spalva = Visos_Teksturos[((int)(ty) & 31) * teksturosdydis + ((int)(tx) & 31) + mp] * (tipas == 0 ? 0.7 : 0.9); // Ground darker, skybox lighter
-        glColor3f(spalva / (tipas == 0 ? 1.5 : 2.0), spalva / (tipas == 0 ? 1.5 : 1.2), spalva);  // Gray bricks and blue sky
-        glPointSize(8);
-        glBegin(GL_POINTS);
-        glVertex2i(r * 8 + 530, tipas == 0 ? y : ekranoaukstis - y);  // Ground and sky flipped
-        glEnd();
-    }
-}
 
 void draw_map(FrameBuffer &fb, const std::vector<Sprite> &sprites, const Texture &tex_walls, const Map &map, const size_t cell_w, const size_t cell_h) {
     for (size_t j=0; j<map.h; j++) {  // draw the map itself
@@ -122,6 +97,27 @@ void render(FrameBuffer &fb, const GameState &gs) {
             break;
         } // ray marching loop
     } // field of view ray sweeping
+
+    //sky and ground
+    for (int y = 0; y < ekranoaukstis; y++) {
+        float dy = y - (ekranoaukstis / 2.0);
+        if (dy == 0) continue;
+        float angle = degToRad(ra);
+        float factor = PROJEKCIJA * teksturosdydis / dy;
+        float tx = px / 2 + cos(angle) * factor;
+        float ty = py / 2 - sin(angle) * factor;
+
+        for (int tipas = 0; tipas < 2; tipas++) { // 0 - ground, 1 - skybox
+            const Texture &tex = (tipas == 0) ? tex_ground : tex_skybox;
+            int mp = tex[((int)(ty) & 31) * teksturosdydis + ((int)(tx) & 31)];
+            float spalva = tex[((int)(ty) & 31) * teksturosdydis + ((int)(tx) & 31) + mp] * (tipas == 0 ? 0.7 : 0.9);
+            glColor3f(spalva / (tipas == 0 ? 1.5 : 2.0), spalva / (tipas == 0 ? 1.5 : 1.2), spalva);
+            glPointSize(8);
+            glBegin(GL_POINTS);
+            glVertex2i(r * 8 + 530, tipas == 0 ? y : ekranoaukstis - y);
+            glEnd();
+        }
+    }
 
     draw_map(fb, sprites, tex_walls, map, cell_w, cell_h);
 

@@ -5,7 +5,7 @@ Trying to figure out how tinyraycaster works and try to improve on it.
 
 ```
 sudo apt install -y libsdl2-dev git
-git clone https://github.com/BombzpakisULTD/tinyhardattempt.git --branch copybuild
+git clone https://github.com/BombzpakisULTD/tinyhardattempt.git
 cd tinyhardattempt
 mkdir build
 cd build

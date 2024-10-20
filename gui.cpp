@@ -6,7 +6,7 @@
 #include <cmath>
 #include "SDL.h"
 
-#include "utils.h"
+#include "utils.h" // detales viduje
 #include "main.h"
 
 int main() {
@@ -17,7 +17,7 @@ int main() {
 
     FrameBuffer fb{1024, 512, std::vector<uint32_t>(1024*512, pack_color(255, 255, 255))};
     GameState gs{ Map(),                                // game map
-                  {3.456, 2.345, 1.523, M_PI/3., 0, 0}, // player
+                  {3.456, 2.345, 1.523, M_PI/3., 0, 0}, // player vieta ir pov
                   { {8, 13, 2, 0},               // monstru vietos x,y,koks, vertical
                     {8, 14, 1, 0},
                   },

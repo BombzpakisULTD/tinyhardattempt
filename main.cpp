@@ -17,7 +17,31 @@ int wall_x_texcoord(const float hitx, const float hity, const Texture &tex_walls
     assert(tex>=0 && tex<(int)tex_walls.size);
     return tex;
 }
+// Ekrano dydžio konstantos, tekstūros dydis ir projekcija
+const int ekranoaukstis = 320;
+const float PROJEKCIJA = 158.0;
+const int teksturosdydis = 32;
+const int zemelapiodydis = 8; // 8x8 dydžio žemėlapis
 
+for (int y = linijosPradzia + linijosAukstis; y < ekranoaukstis; y++) {
+    float dy = y - (ekranoaukstis / 2.0);
+    if (dy == 0) continue; // Vengti dalybos iš nulio
+
+    float laipsniai = degToRad(ra), Kampas = cos(degToRad(FixAng(pa - ra)));
+    float tx = px / 2 + cos(laipsniai) * PROJEKCIJA * teksturosdydis / dy / Kampas;
+    float ty = py / 2 - sin(laipsniai) * PROJEKCIJA * teksturosdydis / dy / Kampas;
+
+    for (int tipas = 0; tipas < 2; tipas++) {  // 0 - grindys, 1 - lubos
+        int mp = (tipas == 0 ? grindys : lubos)[(int)(ty / teksturosdydis) * zemelapiodydis + (int)(tx / teksturosdydis)] * teksturosdydis * teksturosdydis;
+        float spalva = Visos_Teksturos[((int)(ty) & 31) * teksturosdydis + ((int)(tx) & 31) + mp] * (tipas == 0 ? 0.7 : 0.9); // Grindys tamsesnės, lubos šviesesnės
+
+        glColor3f(spalva / (tipas == 0 ? 1.5 : 2.0), spalva / (tipas == 0 ? 1.5 : 1.2), spalva);  // Pilkos plytos ir mėlynos lubos
+        glPointSize(8);
+        glBegin(GL_POINTS);
+        glVertex2i(r * 8 + 530, tipas == 0 ? y : ekranoaukstis - y);  // Grindys ir lubos apverstos
+        glEnd();
+    }
+}
 void draw_map(FrameBuffer &fb, const std::vector<Sprite> &sprites, const Texture &tex_walls, const Map &map, const size_t cell_w, const size_t cell_h) {
     for (size_t j=0; j<map.h; j++) {  // draw the map itself
         for (size_t i=0; i<map.w; i++) {

@@ -11,7 +11,7 @@ tasks:
     cd build &&
     cmake .. &&
     make &&
-    ./tinyraycaster &&
+    ./tinyhardattempt &&
     pnmtopng out.ppm > out.png &&
     open out.png &&
     cd ..
